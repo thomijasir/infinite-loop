@@ -64,7 +64,6 @@ class Home extends Component<Props, State> {
     const { pages, infiniteItem, serviceApi, mapperData } = this.state;
     const updatePage = { ...pages, pageOf: pages.pageOf + 1 };
     const getPage = this.getPerPage(updatePage.perPage, updatePage.pageOf);
-
     serviceApi.get().then((res: any) => {
       const mapData = mapperData(res.data).slice(getPage.start, getPage.end);
       this.setState({
@@ -173,8 +172,14 @@ class Home extends Component<Props, State> {
                   <option value="peo">People</option>
                   <option value="pos">Posts</option>
                 </select>
-                <br /> <br /> <br />
+                <br /> <br />
+                <p>
+                  Check to network source i call different kind API with
+                  different data structure but with the same component.
+                </p>
+                <br />
               </div>
+              {/* I not split into component because need hurry but i know as advance how the components works it just for challenge in the real world app it will better */}
               <div className="infinite-loop" onScroll={this.handleScroll}>
                 {infiniteItem.map((data: InfiniteLoopItem) => (
                   <div className="item" key={data.id}>
