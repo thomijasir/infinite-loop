@@ -2,15 +2,16 @@ import React, { Component } from "react";
 
 import { Person } from "../../interfaces/Person";
 import { InfiniteLoopItem } from "../../interfaces/General";
-import { movieMapperData } from "../../utils/Mapper";
-// import { TITLE_HOME_PAGE } from "../../constants";
-// import reactLogo from '../../assets/images/react.svg';
-// import text from './Home.translation';
-// import { debounce } from "../../utils/Helper";
+import {
+  movieMapperData,
+  postMapperData,
+  peopleMapperData,
+} from "../../utils/Mapper";
+import text from "./Home.translation";
 import ApiService from "../../services/Api";
 import "./Home.scss";
 
-const { movieService } = ApiService.getInstance();
+const { movieService, peopleService, postService } = ApiService.getInstance();
 
 export interface Props {
   intl: any;
@@ -20,10 +21,11 @@ export interface State {
   title: String;
   person: Person;
   infiniteItem: InfiniteLoopItem[];
-  apiSelection: string;
   isLoadingItem: boolean;
   isLoadingApi: boolean;
   pages: any;
+  serviceApi: any;
+  mapperData: Function;
 }
 
 class Home extends Component<Props, State> {
@@ -31,43 +33,42 @@ class Home extends Component<Props, State> {
     title: "React Boilerplate",
     person: {
       name: "Thomi Jasir",
-      age: 22,
+      age: 23,
       hobbies: ["Coding", "Fitness"],
     },
     infiniteItem: [{ id: 0, title: "", desc: "" }],
     pages: { perPage: 7, pageOf: 1 },
-    apiSelection: "default",
     isLoadingItem: false,
-    isLoadingApi: false,
+    isLoadingApi: true,
+    serviceApi: movieService,
+    mapperData: movieMapperData,
   };
 
   componentDidMount() {
-    const { pages } = this.state;
+    this.initData();
+  }
+
+  initData = (): void => {
+    const { pages, serviceApi, mapperData } = this.state;
     const getPage = this.getPerPage(pages.perPage, pages.pageOf);
-    movieService.get().then((res: any) => {
-      const mapMovie = movieMapperData(res.data).slice(
-        getPage.start,
-        getPage.end,
-      );
+    serviceApi.get().then((res: any) => {
+      const mapData = mapperData(res.data).slice(getPage.start, getPage.end);
       this.setState({
-        infiniteItem: mapMovie,
+        infiniteItem: mapData,
         isLoadingApi: false,
       });
     });
-  }
+  };
 
   updatePages = (): void => {
-    const { pages, infiniteItem } = this.state;
+    const { pages, infiniteItem, serviceApi, mapperData } = this.state;
     const updatePage = { ...pages, pageOf: pages.pageOf + 1 };
     const getPage = this.getPerPage(updatePage.perPage, updatePage.pageOf);
 
-    movieService.get().then((res: any) => {
-      const mapMovie = movieMapperData(res.data).slice(
-        getPage.start,
-        getPage.end,
-      );
+    serviceApi.get().then((res: any) => {
+      const mapData = mapperData(res.data).slice(getPage.start, getPage.end);
       this.setState({
-        infiniteItem: [...infiniteItem, ...mapMovie],
+        infiniteItem: [...infiniteItem, ...mapData],
         pages: updatePage,
         isLoadingApi: false,
         isLoadingItem: false,
@@ -93,22 +94,71 @@ class Home extends Component<Props, State> {
     const height = event.target.scrollHeight;
     const offset = event.target.offsetHeight;
     const position = event.target.scrollTop;
-
     if (position + offset >= height) {
       this.setState({ isLoadingItem: true }, this.updatePages);
     }
   };
+
+  handleSelection = (event: any) => {
+    const selection = event.target.value;
+    switch (selection) {
+      case "mov":
+        this.setState(
+          {
+            serviceApi: movieService,
+            mapperData: movieMapperData,
+            isLoadingApi: true,
+            pages: { perPage: 7, pageOf: 1 },
+          },
+          this.initData,
+        );
+        break;
+      case "peo":
+        this.setState(
+          {
+            serviceApi: peopleService,
+            mapperData: peopleMapperData,
+            isLoadingApi: true,
+            pages: { perPage: 7, pageOf: 1 },
+          },
+          this.initData,
+        );
+        break;
+      case "pos":
+        this.setState(
+          {
+            serviceApi: postService,
+            mapperData: postMapperData,
+            isLoadingApi: true,
+            pages: { perPage: 7, pageOf: 1 },
+          },
+          this.initData,
+        );
+        break;
+      default:
+        this.setState(
+          {
+            serviceApi: movieService,
+            mapperData: movieMapperData,
+            isLoadingApi: true,
+            pages: { perPage: 7, pageOf: 1 },
+          },
+          this.initData,
+        );
+        break;
+    }
+  };
+
   render() {
-    // const { title, person } = this.state;
-    // const {
-    //   intl: { formatMessage },
-    // } = this.props;
+    const {
+      intl: { formatMessage },
+    } = this.props;
     const { infiniteItem, isLoadingApi, isLoadingItem } = this.state;
     return (
       <div className="home-page">
         <div className="container-fluid">
           <div className="row center-xs">
-            <div className="col-lg-6 make-relative">
+            <div className="col-lg-4 make-relative">
               <div className={`loader ${isLoadingApi ? "active" : ""}`}>
                 <div className="lds-facebook">
                   <div></div>
@@ -117,7 +167,13 @@ class Home extends Component<Props, State> {
                 </div>
               </div>
               <div className="section">
-                <p> For Api Selecetion</p>
+                <p>{formatMessage(text.app)}</p>
+                <select name="API" onChange={this.handleSelection}>
+                  <option value="mov">Movies</option>
+                  <option value="peo">People</option>
+                  <option value="pos">Posts</option>
+                </select>
+                <br /> <br /> <br />
               </div>
               <div className="infinite-loop" onScroll={this.handleScroll}>
                 {infiniteItem.map((data: InfiniteLoopItem) => (

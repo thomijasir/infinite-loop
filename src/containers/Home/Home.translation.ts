@@ -1,17 +1,17 @@
-import { defineMessages } from 'react-intl';
+import { defineMessages } from "react-intl";
 
 export default defineMessages({
   app: {
-    id: 'app.name',
-    defaultMessage: 'React Boilerplate',
+    id: "app.name",
+    defaultMessage: "API Selection",
   },
   desc: {
-    id: 'app.desc',
+    id: "app.desc",
     defaultMessage:
-      'This template project was designed for easy scalability apps.',
+      "This template project was designed for easy scalability apps.",
   },
   info: {
-    id: 'app.info',
-    defaultMessage: 'Architecture by Thomi Jasir',
+    id: "app.info",
+    defaultMessage: "Architecture by Thomi Jasir",
   },
 });

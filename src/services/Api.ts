@@ -14,15 +14,16 @@ class ApiService {
   constructor() {
     this.movieService = axios.create({
       baseURL:
-        "https://innovation-fe-assets.s3.ap-southeast-1.amazonaws.com/json/movies.json",
+        "https://raw.githubusercontent.com/thomijasir/infinite-loop/master/public/movies.json",
     });
 
     this.peopleService = axios.create({
-      baseURL: "http://localhost:8888/people.json",
+      baseURL:
+        "https://raw.githubusercontent.com/thomijasir/infinite-loop/master/public/people.json",
     });
 
     this.postService = axios.create({
-      baseURL: "http://localhost:8888/posts.json",
+      baseURL: "https://jsonplaceholder.typicode.com/posts",
     });
 
     this.movieService.interceptors.response.use(

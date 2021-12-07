@@ -5,18 +5,20 @@
   .infinite-loop {
     height: auto;
     max-height: 600px;
-    border: 1px solid #000;
+    // border: 1px solid #000;
     border-radius: 4px;
     box-sizing: border-box;
     overflow-y: scroll;
     padding: 16px;
     .item {
-      width: 300px;
+      width: inherit;
       text-align: left;
       padding: 16px 16px 24px 16px;
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       margin-top: 16px;
       box-sizing: border-box;
+      margin-left: auto;
+      margin-right: auto;
       &:first-child {
         margin-top: 0;
       }
