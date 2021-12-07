@@ -17,6 +17,8 @@ export interface Props {
   intl: any;
 }
 
+// Here is the sample interface in real application i will define interface the data that will load
+// and the data will be use but again i need hurry just a few data not all
 export interface State {
   title: String;
   person: Person;
@@ -51,6 +53,7 @@ class Home extends Component<Props, State> {
   initData = (): void => {
     const { pages, serviceApi, mapperData } = this.state;
     const getPage = this.getPerPage(pages.perPage, pages.pageOf);
+    // i know its not a real pagination but if you have any api i can do that
     serviceApi.get().then((res: any) => {
       const mapData = mapperData(res.data).slice(getPage.start, getPage.end);
       this.setState({
@@ -64,6 +67,8 @@ class Home extends Component<Props, State> {
     const { pages, infiniteItem, serviceApi, mapperData } = this.state;
     const updatePage = { ...pages, pageOf: pages.pageOf + 1 };
     const getPage = this.getPerPage(updatePage.perPage, updatePage.pageOf);
+    // I know the page paginiation not spouse to be using array slicing because it just a test
+    // i can do page pagination if you have API
     serviceApi.get().then((res: any) => {
       const mapData = mapperData(res.data).slice(getPage.start, getPage.end);
       this.setState({
@@ -75,6 +80,8 @@ class Home extends Component<Props, State> {
     });
   };
 
+  // i know its not spouse to be using any in any type data but must define exacly what is the data
+  // But i need hurry, for example i make 1 interface data for loop item
   getPerPage = (perPage: any, pageOf: any) => {
     const calcPage = perPage * pageOf;
     if (pageOf <= 1) {
@@ -158,6 +165,7 @@ class Home extends Component<Props, State> {
         <div className="container-fluid">
           <div className="row center-xs">
             <div className="col-lg-4 make-relative">
+              {/* i know the loader component must be split into small pieces but i need hurry so i put everything on the home */}
               <div className={`loader ${isLoadingApi ? "active" : ""}`}>
                 <div className="lds-facebook">
                   <div></div>
@@ -167,6 +175,7 @@ class Home extends Component<Props, State> {
               </div>
               <div className="section">
                 <p>{formatMessage(text.app)}</p>
+                {/* i know the selection component must be split into small pieces but i need hurry so i put everything on the home */}
                 <select name="API" onChange={this.handleSelection}>
                   <option value="mov">Movies</option>
                   <option value="peo">People</option>
@@ -189,6 +198,7 @@ class Home extends Component<Props, State> {
                     </div>
                   </div>
                 ))}
+                {/* i know the loader component must be split into small pieces but i need hurry so i put everything on the home */}
                 <div className={`lds-ripple ${isLoadingItem ? "active" : ""}`}>
                   <div></div>
                   <div></div>
