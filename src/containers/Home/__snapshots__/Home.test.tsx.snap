@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Container Snap Test render() renders the home container 1`] = `
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
+`;
+
+exports[`Home Page Snap Test render() renders the home page 1`] = `
+<div
+  className="home-page"
+>
+  <div
+    className="container-fluid"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-lg-12"
+      >
+        <img
+          alt="react-logo"
+          className="rotate"
+          src="react.svg"
+        />
+        <h1>
+          React Boilerplate
+        </h1>
+        <p />
+        <small />
+      </div>
+    </div>
+  </div>
+</div>
+`;
